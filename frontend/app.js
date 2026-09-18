@@ -12,7 +12,7 @@
     { value: "ETC", label: "기타" }
   ];
 
-  const apiBase = window.ACTIVITY_API_BASE || (window.location.protocol === "file:" ? "http://localhost:8080" : "");
+  const apiBase = window.ACTIVITY_API_BASE || "http://43.200.176.63:8080";
 
   function readStore(key, fallback) {
     const raw = localStorage.getItem(key);

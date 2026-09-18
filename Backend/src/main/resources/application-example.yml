@@ -1,6 +1,8 @@
 server:
+  # 서버 바인딩 주소 (EC2: 0.0.0.0으로 모든 인터페이스에서 수신)
+  address: ${SERVER_ADDRESS:0.0.0.0}
   # 서버 포트 (기본값: 8080)
-  port: 8080
+  port: ${SERVER_PORT:8080}
 
 spring:
   application:
@@ -10,9 +12,9 @@ spring:
     # MySQL 접속 URL
     # - localhost:3306 → DB 서버 주소:포트
     # - byemypet       → 미리 생성해 둔 스키마(데이터베이스) 이름
-    url: jdbc:mysql://localhost:3306/byemypet?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: your_mysql_username   # MySQL 계정
-    password: your_mysql_password   # MySQL 비밀번호
+    url: ${DB_URL:jdbc:mysql://localhost:3306/byemypet?serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
+    username: ${DB_USERNAME:your_mysql_username}   # MySQL 계정
+    password: ${DB_PASSWORD:your_mysql_password}   # MySQL 비밀번호
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jackson:
@@ -40,10 +42,10 @@ app:
   # 이미지 업로드 저장 경로 (상대 경로 또는 절대 경로 모두 가능)
   # 예) uploads           → 실행 위치 기준 ./uploads/
   # 예) /var/data/uploads → 절대 경로
-  upload-dir: uploads
+  upload-dir: ${UPLOAD_DIR:uploads}
 
   cors:
     # 프론트엔드 origin 허용 패턴
     # 개발: "*"  (모든 origin 허용)
     # 운영: "https://your-frontend-domain.com"
-    allowed-origin-patterns: "*"
+    allowed-origin-patterns: ${CORS_ALLOWED_ORIGINS:*}
