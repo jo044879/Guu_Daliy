@@ -127,6 +127,21 @@ button:hover {
   margin-bottom: 3rem;
 }
 
+.compose-shell {
+  display: grid;
+  place-items: start center;
+  min-height: 60vh;
+  padding-top: 0.5rem;
+}
+
+.compose-panel {
+  width: min(560px, 100%);
+}
+
+.form-panel-head {
+  margin-bottom: 0.25rem;
+}
+
 .panel h2,
 .feed-toolbar h2,
 .empty-state h3 {
@@ -156,6 +171,20 @@ button:hover {
   font-weight: 800;
 }
 
+.field-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.char-count {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 input,
 select,
 textarea {
@@ -181,6 +210,89 @@ textarea:focus {
   outline: none;
 }
 
+.upload-field {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 2px dashed var(--line);
+  border-radius: 16px;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 1.75rem 1rem;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.upload-dropzone:hover {
+  border-color: var(--primary);
+  background: #f4ebff;
+}
+
+.upload-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--primary);
+  font-size: 1.25rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.upload-text {
+  font-size: 0.95rem;
+}
+
+.image-preview {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.image-preview img {
+  display: block;
+  width: 100%;
+  max-height: 20rem;
+  object-fit: cover;
+  background: var(--primary-soft);
+}
+
+.image-remove {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(36, 19, 53, 0.65);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
 .primary-button {
   display: inline-flex;
   align-items: center;
@@ -194,6 +306,26 @@ textarea:focus {
   font: inherit;
   font-weight: 800;
   padding: 1rem 1.2rem;
+}
+
+.form-actions .primary-button {
+  flex: 1;
+  width: auto;
+}
+
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  padding: 1rem 1.4rem;
+  text-decoration: none;
 }
 
 a.primary-button {
@@ -319,5 +451,13 @@ a.primary-button {
 
   .summary-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .secondary-button {
+    width: 100%;
   }
 }

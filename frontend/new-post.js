@@ -11,8 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#post-form");
   const activitySelect = document.querySelector("#activity-type");
   const message = document.querySelector("#post-message");
+  const description = document.querySelector("#description");
+  const descriptionCount = document.querySelector("#description-count");
+  const imageInput = document.querySelector("#image");
+  const imagePreview = document.querySelector("#image-preview");
+  const imagePreviewImg = document.querySelector("#image-preview-img");
+  const imageRemove = document.querySelector("#image-remove");
+  const uploadDropzone = document.querySelector("#upload-dropzone");
 
   renderActivityOptions(activitySelect);
+  bindDescriptionCounter(description, descriptionCount);
+  bindImagePreview(imageInput, imagePreview, imagePreviewImg, imageRemove, uploadDropzone);
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -49,4 +58,45 @@ function renderActivityOptions(select) {
   });
 
   select.replaceChildren(placeholder, ...options);
+}
+
+function bindDescriptionCounter(textarea, counter) {
+  const max = textarea.maxLength;
+
+  const update = () => {
+    counter.textContent = `${textarea.value.length}/${max}`;
+  };
+
+  textarea.addEventListener("input", update);
+  update();
+}
+
+function bindImagePreview(input, preview, previewImg, removeButton, dropzone) {
+  input.addEventListener("change", () => {
+    const file = input.files && input.files[0];
+
+    if (!file) {
+      hidePreview();
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      previewImg.src = reader.result;
+      preview.hidden = false;
+      dropzone.hidden = true;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  removeButton.addEventListener("click", () => {
+    input.value = "";
+    hidePreview();
+  });
+
+  function hidePreview() {
+    preview.hidden = true;
+    previewImg.src = "";
+    dropzone.hidden = false;
+  }
 }

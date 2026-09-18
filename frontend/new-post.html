@@ -21,10 +21,12 @@
     </nav>
   </header>
 
-  <main class="page-shell">
-    <section class="panel form-panel" aria-labelledby="post-title">
-      <h2 id="post-title">게시물 작성</h2>
-      <p class="section-copy">이미지는 선택사항입니다. 글만 올려도 됩니다.</p>
+  <main class="page-shell compose-shell">
+    <section class="panel form-panel compose-panel" aria-labelledby="post-title">
+      <div class="form-panel-head">
+        <h2 id="post-title">게시물 작성</h2>
+        <p class="section-copy">이미지는 선택사항입니다. 글만 올려도 됩니다.</p>
+      </div>
 
       <form id="post-form" action="/posts" method="post" enctype="multipart/form-data" novalidate>
         <div class="field">
@@ -33,29 +35,47 @@
         </div>
 
         <div class="field">
-          <label for="description">간단한 설명</label>
+          <div class="field-label-row">
+            <label for="description">간단한 설명</label>
+            <span id="description-count" class="char-count">0/500</span>
+          </div>
           <textarea
             id="description"
             name="description"
             rows="6"
+            maxlength="500"
             required
           ></textarea>
         </div>
 
         <div class="field">
           <label for="image">이미지 올리기</label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/*"
-          >
+          <div class="upload-field">
+            <label class="upload-dropzone" for="image" id="upload-dropzone">
+              <span class="upload-icon" aria-hidden="true">+</span>
+              <span class="upload-text">클릭해서 이미지 선택</span>
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              hidden
+            >
+            <div id="image-preview" class="image-preview" hidden>
+              <img id="image-preview-img" alt="선택한 이미지 미리보기">
+              <button type="button" id="image-remove" class="image-remove" aria-label="이미지 제거">✕</button>
+            </div>
+          </div>
           <p class="helper-text">선택한 이미지는 게시물에 함께 표시됩니다.</p>
         </div>
 
         <p id="post-message" class="form-message" aria-live="polite"></p>
 
-        <button class="primary-button" type="submit">게시물 올리기</button>
+        <div class="form-actions">
+          <a class="secondary-button" href="feed.html">취소</a>
+          <button class="primary-button" type="submit">게시물 올리기</button>
+        </div>
       </form>
     </section>
   </main>
