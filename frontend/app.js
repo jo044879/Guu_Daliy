@@ -1,7 +1,5 @@
 (function () {
   const storageKeys = {
-    members: "activityMembers",
-    posts: "activityPosts",
     currentMember: "activityCurrentMember"
   };
 
@@ -28,15 +26,13 @@
       ? { ...(options && options.headers) }
       : { "Content-Type": "application/json", ...(options && options.headers) };
 
-    const response = await fetch(`${apiBase}${path}`, {
+    const response = await fetchOrThrow(`${apiBase}${path}`, {
       ...options,
       headers
     });
 
     if (!response.ok) {
-      const error = new Error(await readErrorMessage(response));
-      error.isApiError = true;
-      throw error;
+      throw new Error(await readErrorMessage(response));
     }
 
     if (response.status === 204) {
@@ -44,6 +40,14 @@
     }
 
     return response.json();
+  }
+
+  async function fetchOrThrow(url, options) {
+    try {
+      return await fetch(url, options);
+    } catch (error) {
+      throw new Error("서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.");
+    }
   }
 
   async function readErrorMessage(response) {
@@ -58,22 +62,16 @@
   }
 
   async function sendMultipart(path, formData) {
-    const response = await fetch(`${apiBase}${path}`, {
+    const response = await fetchOrThrow(`${apiBase}${path}`, {
       method: "POST",
       body: formData
     });
 
     if (!response.ok) {
-      const error = new Error(await readErrorMessage(response));
-      error.isApiError = true;
-      throw error;
+      throw new Error(await readErrorMessage(response));
     }
 
     return response.json();
-  }
-
-  function shouldUseLocalFallback(error) {
-    return !error.isApiError;
   }
 
   function getAssetUrl(path) {
@@ -96,102 +94,29 @@
   }
 
   async function createMember(member) {
-    try {
-      const savedMember = await request("/members", {
-        method: "POST",
-        body: JSON.stringify(member)
-      });
-      setCurrentMember(savedMember);
-      return savedMember;
-    } catch (error) {
-      if (!shouldUseLocalFallback(error)) {
-        throw error;
-      }
-
-      const members = readStore(storageKeys.members, []);
-      const exists = members.some((item) => item.studentId === member.studentId);
-
-      if (exists) {
-        throw new Error("이미 가입된 학번입니다.");
-      }
-
-      const savedMember = {
-        id: crypto.randomUUID(),
-        name: member.name,
-        studentId: member.studentId,
-        password: member.password
-      };
-
-      members.push(savedMember);
-      writeStore(storageKeys.members, members);
-      setCurrentMember(savedMember);
-      return savedMember;
-    }
+    const savedMember = await request("/members", {
+      method: "POST",
+      body: JSON.stringify(member)
+    });
+    setCurrentMember(savedMember);
+    return savedMember;
   }
 
   async function login(credentials) {
-    try {
-      const member = await request("/login", {
-        method: "POST",
-        body: JSON.stringify(credentials)
-      });
-      setCurrentMember(member);
-      return member;
-    } catch (error) {
-      if (!shouldUseLocalFallback(error)) {
-        throw error;
-      }
-
-      const members = readStore(storageKeys.members, []);
-      const member = members.find((item) => {
-        return item.studentId === credentials.studentId && item.password === credentials.password;
-      });
-
-      if (!member) {
-        throw new Error("학번 또는 비밀번호를 확인해 주세요.");
-      }
-
-      setCurrentMember(member);
-      return member;
-    }
+    const member = await request("/login", {
+      method: "POST",
+      body: JSON.stringify(credentials)
+    });
+    setCurrentMember(member);
+    return member;
   }
 
   async function getPosts() {
-    try {
-      return await request("/posts", { method: "GET" });
-    } catch (error) {
-      if (!shouldUseLocalFallback(error)) {
-        throw error;
-      }
-
-      return readStore(storageKeys.posts, []);
-    }
+    return await request("/posts", { method: "GET" });
   }
 
   async function getMembers() {
-    try {
-      return await request("/members", { method: "GET" });
-    } catch (error) {
-      if (!shouldUseLocalFallback(error)) {
-        throw error;
-      }
-
-      return readStore(storageKeys.members, []);
-    }
-  }
-
-  function fileToDataUrl(file) {
-    return new Promise((resolve, reject) => {
-      if (!file) {
-        resolve("");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = () => reject(new Error("이미지를 읽을 수 없습니다."));
-      reader.readAsDataURL(file);
-    });
+    return await request("/members", { method: "GET" });
   }
 
   async function createPost(formElement) {
@@ -203,31 +128,7 @@
     const formData = new FormData(formElement);
     formData.set("studentId", member.studentId);
 
-    try {
-      return await sendMultipart("/posts", formData);
-    } catch (error) {
-      if (!shouldUseLocalFallback(error)) {
-        throw error;
-      }
-
-      const posts = readStore(storageKeys.posts, []);
-      const imageFile = formData.get("image");
-      const imageUrl = imageFile && imageFile.size > 0 ? await fileToDataUrl(imageFile) : "";
-
-      const post = {
-        id: crypto.randomUUID(),
-        activityType: formData.get("activityType"),
-        description: String(formData.get("description") || "").trim(),
-        imageUrl,
-        authorName: member.name,
-        studentId: member.studentId,
-        createdAt: new Date().toISOString()
-      };
-
-      posts.unshift(post);
-      writeStore(storageKeys.posts, posts);
-      return post;
-    }
+    return await sendMultipart("/posts", formData);
   }
 
   function getActivityLabel(value) {
