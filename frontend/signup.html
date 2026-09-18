@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>규혜의 우리는</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+  <script src="signup.js" defer></script>
+</head>
+<body class="auth-page">
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Together Log</p>
+      <h1>활동 인증 서비스</h1>
+    </div>
+    <nav class="top-nav" aria-label="주요 메뉴">
+      <a href="index.html">로그인</a>
+    </nav>
+  </header>
+
+  <main class="auth-layout">
+    <section class="panel auth-panel" aria-labelledby="signup-title">
+      <h2 id="signup-title">회원가입</h2>
+      <p class="section-copy">이름과 학번을 저장해 활동 기록에 표시합니다.</p>
+
+      <form id="signup-form" action="/members" method="post" novalidate>
+        <div class="field">
+          <label for="name">이름</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="student-id">학번</label>
+          <input
+            type="text"
+            id="student-id"
+            name="studentId"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="new-password"
+            required
+          >
+        </div>
+
+        <p id="signup-message" class="form-message" aria-live="polite"></p>
+
+        <button class="primary-button" type="submit">가입하기</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

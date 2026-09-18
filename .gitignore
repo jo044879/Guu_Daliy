@@ -1,0 +1,28 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Sensitive application config (Spring Boot)
+**/application.yml
+**/application.yaml
+**/application-local.yml
+**/application-local.yaml
+**/application-prod.yml
+**/application-prod.yaml
+**/application-secret.yml
+**/application-secret.yaml
+!**/application-example.yml
+!**/application-example.yaml
+!**/application-test.yml
+!**/application-test.yaml
+
+# Credentials / keys
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+credentials.json
+secrets.yml
+secrets.yaml

@@ -1,0 +1,49 @@
+server:
+  # 서버 포트 (기본값: 8080)
+  port: 8080
+
+spring:
+  application:
+    name: backend
+
+  datasource:
+    # MySQL 접속 URL
+    # - localhost:3306 → DB 서버 주소:포트
+    # - byemypet       → 미리 생성해 둔 스키마(데이터베이스) 이름
+    url: jdbc:mysql://localhost:3306/byemypet?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: your_mysql_username   # MySQL 계정
+    password: your_mysql_password   # MySQL 비밀번호
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jackson:
+    serialization:
+      # LocalDateTime 등 Java 날짜 타입을 ISO 8601 문자열로 직렬화
+      write-dates-as-timestamps: false
+
+  jpa:
+    hibernate:
+      # update  : 스키마 자동 변경 (개발 환경 권장)
+      # validate: 스키마 검증만, 변경 없음 (운영 환경 권장)
+      # none    : 아무것도 안 함
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+  servlet:
+    multipart:
+      max-file-size: 10MB       # 단일 파일 최대 크기
+      max-request-size: 12MB    # 전체 요청 최대 크기
+
+app:
+  # 이미지 업로드 저장 경로 (상대 경로 또는 절대 경로 모두 가능)
+  # 예) uploads           → 실행 위치 기준 ./uploads/
+  # 예) /var/data/uploads → 절대 경로
+  upload-dir: uploads
+
+  cors:
+    # 프론트엔드 origin 허용 패턴
+    # 개발: "*"  (모든 origin 허용)
+    # 운영: "https://your-frontend-domain.com"
+    allowed-origin-patterns: "*"

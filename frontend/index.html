@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>활동 인증 서비스 - 로그인</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+  <script src="login.js" defer></script>
+</head>
+<body class="auth-page">
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Together Log</p>
+      <h1>활동 인증 서비스</h1>
+      <p>운동, 성경읽기 등 오늘 한 활동을 함께 기록합니다.</p>
+    </div>
+  </header>
+
+  <main class="auth-layout">
+    <section class="panel auth-panel" aria-labelledby="login-title">
+      <h2 id="login-title">로그인</h2>
+      <p class="section-copy">학번으로 로그인하고 오늘의 활동을 공유하세요.</p>
+
+      <form id="login-form" action="/login" method="post" novalidate>
+        <div class="field">
+          <label for="student-id">학번</label>
+          <input
+            type="text"
+            id="student-id"
+            name="studentId"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <p id="login-message" class="form-message" aria-live="polite"></p>
+
+        <button class="primary-button" type="submit">로그인</button>
+      </form>
+
+      <p class="helper-text">
+        아직 계정이 없다면
+        <a href="signup.html">회원가입</a>
+      </p>
+    </section>
+  </main>
+</body>
+</html>
