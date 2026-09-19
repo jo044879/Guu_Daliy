@@ -417,9 +417,9 @@ a.primary-button {
 .post-image {
   display: block;
   width: 100%;
-  max-height: 34rem;
-  object-fit: cover;
-  background: var(--primary-soft);
+  max-height: 20rem;
+  object-fit: contain;
+  background: var(--bg-deep);
 }
 
 .empty-state {
