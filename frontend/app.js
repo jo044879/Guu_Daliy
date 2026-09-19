@@ -9,8 +9,7 @@
     { value: "STUDY", label: "공부" },
     { value: "ETC", label: "기타" }
   ];
-
-  const apiBase = window.ACTIVITY_API_BASE || "http://43.200.176.63:8080";
+  const apiBase = window.ACTIVITY_API_BASE || "/api";
 
   function readStore(key, fallback) {
     const raw = localStorage.getItem(key);
